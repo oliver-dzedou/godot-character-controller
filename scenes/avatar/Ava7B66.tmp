@@ -1,0 +1,152 @@
+[gd_scene load_steps=13 format=3 uid="uid://u6kf67s3v3yw"]
+
+[ext_resource type="Script" path="res://scenes/avatar/avatar.gd" id="1_swfxf"]
+[ext_resource type="Script" path="res://scenes/avatar/combat_controller.gd" id="3_x51v5"]
+[ext_resource type="Script" path="res://scenes/avatar/event_bus.gd" id="5_6jvmo"]
+[ext_resource type="Script" path="res://scenes/avatar/input_controller.gd" id="6_kc8vc"]
+[ext_resource type="Script" path="res://scenes/avatar/state_controller.gd" id="7_lhcfp"]
+[ext_resource type="Script" path="res://scenes/avatar/animation_controller.gd" id="8_s6034"]
+[ext_resource type="Script" path="res://scenes/avatar/sprite_controller.gd" id="8_yg4tc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6cwre"]
+size = Vector2(109, 168)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aheeu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ii16m"]
+size = Vector2(8, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_li6sv"]
+size = Vector2(14, 27)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_n1vna"]
+
+[node name="Avatar" type="CharacterBody2D" node_paths=PackedStringArray("event_bus", "state", "wall_raycast_bottom_right", "wall_raycast_bottom_left", "wall_raycast_top_right", "wall_raycast_top_left", "ceiling_raycast")]
+script = ExtResource("1_swfxf")
+event_bus = NodePath("EventBus")
+state = NodePath("State")
+wall_raycast_bottom_right = NodePath("Raycasts/WallRaycastBottomRight")
+wall_raycast_bottom_left = NodePath("Raycasts/WallRaycastBottomLeft")
+wall_raycast_top_right = NodePath("Raycasts/WallRaycastTopRight")
+wall_raycast_top_left = NodePath("Raycasts/WallRaycastTopLeft")
+ceiling_raycast = NodePath("Raycasts/CeilingRaycast")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_6cwre")
+
+[node name="EventBus" type="Node" parent="." node_paths=PackedStringArray("character_body", "combat_controller", "input_controller", "state", "animation_controller")]
+script = ExtResource("5_6jvmo")
+character_body = NodePath("..")
+combat_controller = NodePath("../CombatController")
+input_controller = NodePath("../InputController")
+state = NodePath("../State")
+animation_controller = NodePath("../AnimationController")
+
+[node name="State" type="Node" parent="." node_paths=PackedStringArray("event_bus", "debug")]
+script = ExtResource("7_lhcfp")
+event_bus = NodePath("../EventBus")
+debug = NodePath("../Debug")
+
+[node name="InputController" type="Node" parent="." node_paths=PackedStringArray("state", "event_bus")]
+script = ExtResource("6_kc8vc")
+state = NodePath("../State")
+event_bus = NodePath("../EventBus")
+
+[node name="AnimationController" type="Node" parent="." node_paths=PackedStringArray("state", "event_bus", "animation_player")]
+script = ExtResource("8_s6034")
+state = NodePath("../State")
+event_bus = NodePath("../EventBus")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_aheeu")
+}
+
+[node name="CombatController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "state")]
+visible = false
+script = ExtResource("3_x51v5")
+event_bus = NodePath("../EventBus")
+state = NodePath("../State")
+
+[node name="attack_1_hitbox_left" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_left"]
+position = Vector2(-12, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="attack_1_hitbox_right" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_right"]
+position = Vector2(10, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="Hurtbox" type="Area2D" parent="CombatController"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/Hurtbox"]
+position = Vector2(-1, -14)
+shape = SubResource("RectangleShape2D_li6sv")
+
+[node name="SpriteController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "sprite_top")]
+script = ExtResource("8_yg4tc")
+event_bus = NodePath("../EventBus")
+sprite_top = NodePath("SpriteTop")
+
+[node name="SpriteTop" type="Sprite2D" parent="SpriteController"]
+modulate = Color(0.854902, 0.819608, 0.760784, 1)
+position = Vector2(40, -70)
+scale = Vector2(82, 29)
+texture = SubResource("CanvasTexture_n1vna")
+
+[node name="SpriteBottom" type="Sprite2D" parent="SpriteController"]
+modulate = Color(0.854902, 0.819608, 0.760784, 1)
+scale = Vector2(110, 170)
+texture = SubResource("CanvasTexture_n1vna")
+
+[node name="Raycasts" type="Node" parent="."]
+
+[node name="CeilingRaycast" type="RayCast2D" parent="Raycasts"]
+visible = false
+position = Vector2(0, -18)
+target_position = Vector2(0, -13)
+
+[node name="WallRaycastTopRight" type="RayCast2D" parent="Raycasts"]
+visible = false
+position = Vector2(0, -18)
+target_position = Vector2(10, 0)
+
+[node name="WallRaycastBottomRight" type="RayCast2D" parent="Raycasts"]
+visible = false
+position = Vector2(0, -11)
+target_position = Vector2(10, 0)
+
+[node name="WallRaycastTopLeft" type="RayCast2D" parent="Raycasts"]
+visible = false
+position = Vector2(0, -18)
+target_position = Vector2(-10, 0)
+
+[node name="WallRaycastBottomLeft" type="RayCast2D" parent="Raycasts"]
+visible = false
+position = Vector2(0, -11)
+target_position = Vector2(-10, 0)
+
+[node name="Debug" type="RichTextLabel" parent="."]
+visible = false
+offset_left = -312.0
+offset_top = -281.0
+offset_right = -14.0
+offset_bottom = 83.0
+
+[node name="SoundController" type="Node" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="SoundController"]

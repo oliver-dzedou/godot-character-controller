@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyua1ojhstcjm"]
+
+[ext_resource type="Script" path="res://scenes/game/menu.gd" id="1_0qphn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trle8"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Menu" type="CanvasLayer"]
+
+[node name="MenuWrapper" type="PanelContainer" parent="." node_paths=PackedStringArray("save_button")]
+offset_left = -304.0
+offset_top = -81.0
+offset_right = 124.0
+offset_bottom = 131.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_trle8")
+script = ExtResource("1_0qphn")
+save_button = NodePath("Menu/Top/Save")
+
+[node name="Menu" type="VBoxContainer" parent="MenuWrapper"]
+layout_mode = 2
+
+[node name="Top" type="HBoxContainer" parent="MenuWrapper/Menu"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Save" type="Button" parent="MenuWrapper/Menu/Top"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Save
+"

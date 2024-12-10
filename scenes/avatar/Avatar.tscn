@@ -1,0 +1,311 @@
+[gd_scene load_steps=26 format=3 uid="uid://u6kf67s3v3yw"]
+
+[ext_resource type="Script" path="res://scenes/avatar/avatar.gd" id="1_swfxf"]
+[ext_resource type="Script" path="res://scenes/avatar/combat_controller.gd" id="3_x51v5"]
+[ext_resource type="Script" path="res://scenes/avatar/event_bus.gd" id="5_6jvmo"]
+[ext_resource type="Script" path="res://scenes/avatar/sound_controller.gd" id="6_j67ac"]
+[ext_resource type="Script" path="res://scenes/avatar/input_controller.gd" id="6_kc8vc"]
+[ext_resource type="Script" path="res://scenes/avatar/state_controller.gd" id="7_lhcfp"]
+[ext_resource type="Script" path="res://scenes/avatar/animation_controller.gd" id="8_s6034"]
+[ext_resource type="Script" path="res://scenes/avatar/sprite_controller.gd" id="8_yg4tc"]
+[ext_resource type="Script" path="res://scenes/avatar/texture_rect.gd" id="9_iomlk"]
+[ext_resource type="Script" path="res://scenes/avatar/debug.gd" id="9_pvmej"]
+[ext_resource type="Script" path="res://scenes/avatar/camera_controller.gd" id="11_sb0tw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6cwre"]
+size = Vector2(109.5, 169.5)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aheeu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ii16m"]
+size = Vector2(8, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_li6sv"]
+size = Vector2(14, 27)
+
+[sub_resource type="Gradient" id="Gradient_tg37s"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_226np"]
+gradient = SubResource("Gradient_tg37s")
+fill = 1
+fill_from = Vector2(0.880342, 0.995726)
+fill_to = Vector2(0.884615, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_n1vna"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gyxvs"]
+size = Vector2(110, 170)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ski8n"]
+size = Vector2(110, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uwmqo"]
+size = Vector2(1350, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sbawv"]
+size = Vector2(5, 750)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j3ier"]
+size = Vector2(1350, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aa43b"]
+size = Vector2(5, 750)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_6pte2"]
+
+[node name="Avatar" type="CharacterBody2D" node_paths=PackedStringArray("event_bus", "state", "wall_raycast_bottom_right", "wall_raycast_bottom_left", "wall_raycast_top_right", "wall_raycast_top_left", "ceiling_raycast", "corner_clip_bottom_left", "corner_clip_top_left", "corner_clip_bottom_right", "corner_clip_top_right", "debug_texture", "debug", "bumped_head_left_middle", "bumped_head_left_edge", "bumped_head_right_middle", "bumped_head_right_edge")]
+script = ExtResource("1_swfxf")
+event_bus = NodePath("EventBus")
+state = NodePath("State")
+wall_raycast_bottom_right = NodePath("RayCast/WallRaycastBottomRight")
+wall_raycast_bottom_left = NodePath("RayCast/WallRaycastBottomLeft")
+wall_raycast_top_right = NodePath("RayCast/WallRaycastTopRight")
+wall_raycast_top_left = NodePath("RayCast/WallRaycastTopLeft")
+ceiling_raycast = NodePath("RayCast/CeilingRaycast")
+corner_clip_bottom_left = NodePath("RayCast/CornerClipBottomLeft")
+corner_clip_top_left = NodePath("RayCast/CornerClipTopLeft")
+corner_clip_bottom_right = NodePath("RayCast/CornerClipBottomRight")
+corner_clip_top_right = NodePath("RayCast/CornerClipTopRight")
+debug_texture = NodePath("CanvasLayer/TextureRect")
+debug = NodePath("CanvasLayer/Debug2")
+bumped_head_left_middle = NodePath("RayCast/BumpedHeadLeftMiddle")
+bumped_head_left_edge = NodePath("RayCast/BumpedHeadLeftEdge")
+bumped_head_right_middle = NodePath("RayCast/BumpedHeadRightMiddle")
+bumped_head_right_edge = NodePath("RayCast/BumpedHeadRightEdge")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6cwre")
+
+[node name="EventBus" type="Node" parent="." node_paths=PackedStringArray("character_body", "combat_controller", "input_controller", "state", "animation_controller")]
+script = ExtResource("5_6jvmo")
+character_body = NodePath("..")
+combat_controller = NodePath("../CombatController")
+input_controller = NodePath("../InputController")
+state = NodePath("../State")
+animation_controller = NodePath("../AnimationController")
+
+[node name="State" type="Node" parent="." node_paths=PackedStringArray("event_bus", "debug")]
+script = ExtResource("7_lhcfp")
+event_bus = NodePath("../EventBus")
+debug = NodePath("../CanvasLayer/Debug")
+
+[node name="InputController" type="Node" parent="." node_paths=PackedStringArray("state", "event_bus")]
+script = ExtResource("6_kc8vc")
+state = NodePath("../State")
+event_bus = NodePath("../EventBus")
+
+[node name="AnimationController" type="Node" parent="." node_paths=PackedStringArray("state", "event_bus", "animation_player")]
+script = ExtResource("8_s6034")
+state = NodePath("../State")
+event_bus = NodePath("../EventBus")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_aheeu")
+}
+
+[node name="SoundController" type="Node" parent="." node_paths=PackedStringArray("event_bus", "state")]
+script = ExtResource("6_j67ac")
+event_bus = NodePath("../EventBus")
+state = NodePath("../State")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="SoundController"]
+
+[node name="CameraController" type="Node" parent="." node_paths=PackedStringArray("camera", "avatar", "state", "camera_focus_detector", "camera_limit_detector_left", "camera_limit_detector_right", "camera_limit_detector_top", "camera_limit_detector_bottom", "ledge_detection")]
+script = ExtResource("11_sb0tw")
+camera = NodePath("Camera2D")
+avatar = NodePath("..")
+state = NodePath("../State")
+camera_focus_detector = NodePath("../Area/CameraFocusDetector")
+camera_limit_detector_left = NodePath("../Area/CameraLimitDetectorLeft")
+camera_limit_detector_right = NodePath("../Area/CameraLimitDetectorRight")
+camera_limit_detector_top = NodePath("../Area/CameraLimitDetectorTop")
+camera_limit_detector_bottom = NodePath("../Area/CameraLimitDetectorBottom")
+ledge_detection = NodePath("../Area/LedgeDetection")
+
+[node name="Camera2D" type="Camera2D" parent="CameraController"]
+
+[node name="CombatController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "state")]
+visible = false
+script = ExtResource("3_x51v5")
+event_bus = NodePath("../EventBus")
+state = NodePath("../State")
+
+[node name="attack_1_hitbox_left" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_left"]
+position = Vector2(-12, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="attack_1_hitbox_right" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_right"]
+position = Vector2(10, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="Hurtbox" type="Area2D" parent="CombatController"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/Hurtbox"]
+position = Vector2(-1, -14)
+shape = SubResource("RectangleShape2D_li6sv")
+
+[node name="SpriteController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "sprite")]
+script = ExtResource("8_yg4tc")
+event_bus = NodePath("../EventBus")
+sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteController"]
+position = Vector2(1.19209e-07, 0)
+scale = Vector2(1.71875, 2.65625)
+texture = SubResource("GradientTexture2D_226np")
+
+[node name="SpriteBottom" type="Sprite2D" parent="SpriteController"]
+visible = false
+modulate = Color(0.854902, 0.819608, 0.760784, 1)
+position = Vector2(1, -1)
+scale = Vector2(110, 170)
+texture = SubResource("CanvasTexture_n1vna")
+
+[node name="RayCast" type="Node2D" parent="."]
+
+[node name="CeilingRaycast" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, -18)
+target_position = Vector2(0, -75)
+
+[node name="WallRaycastTopRight" type="RayCast2D" parent="RayCast"]
+position = Vector2(1, -77)
+target_position = Vector2(65, 0)
+
+[node name="WallRaycastBottomRight" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 75)
+target_position = Vector2(65, 0)
+
+[node name="WallRaycastTopLeft" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, -77)
+target_position = Vector2(-62, 0)
+
+[node name="WallRaycastBottomLeft" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 75)
+target_position = Vector2(-62, 0)
+
+[node name="CornerClipTopRight" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 79)
+target_position = Vector2(75, 0)
+
+[node name="CornerClipBottomRight" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 85)
+target_position = Vector2(75, 0)
+
+[node name="CornerClipTopLeft" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 79)
+target_position = Vector2(-75, 0)
+
+[node name="CornerClipBottomLeft" type="RayCast2D" parent="RayCast"]
+position = Vector2(0, 85)
+target_position = Vector2(-75, 0)
+
+[node name="BumpedHeadLeftMiddle" type="RayCast2D" parent="RayCast"]
+position = Vector2(-50, 0)
+target_position = Vector2(0, -95)
+
+[node name="BumpedHeadLeftEdge" type="RayCast2D" parent="RayCast"]
+position = Vector2(-55, 0)
+target_position = Vector2(0, -95)
+
+[node name="BumpedHeadRightMiddle" type="RayCast2D" parent="RayCast"]
+position = Vector2(50, 0)
+target_position = Vector2(0, -95)
+
+[node name="BumpedHeadRightEdge" type="RayCast2D" parent="RayCast"]
+position = Vector2(55, 0)
+target_position = Vector2(0, -95)
+
+[node name="Area" type="Node2D" parent="."]
+
+[node name="CameraFocusDetector" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/CameraFocusDetector"]
+shape = SubResource("RectangleShape2D_gyxvs")
+
+[node name="LedgeDetection" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 2048
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/LedgeDetection"]
+position = Vector2(0, 86.5)
+shape = SubResource("RectangleShape2D_ski8n")
+
+[node name="CameraLimitDetectorRight" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 131072
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/CameraLimitDetectorRight"]
+position = Vector2(675, 0)
+shape = SubResource("RectangleShape2D_uwmqo")
+
+[node name="CameraLimitDetectorTop" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 262144
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/CameraLimitDetectorTop"]
+position = Vector2(0, -375)
+shape = SubResource("RectangleShape2D_sbawv")
+
+[node name="CameraLimitDetectorLeft" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 65536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/CameraLimitDetectorLeft"]
+position = Vector2(-675, 0)
+shape = SubResource("RectangleShape2D_j3ier")
+
+[node name="CameraLimitDetectorBottom" type="Area2D" parent="Area"]
+collision_layer = 0
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area/CameraLimitDetectorBottom"]
+position = Vector2(0, 375)
+shape = SubResource("RectangleShape2D_aa43b")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.205
+anchor_top = 0.119
+anchor_right = 0.205
+anchor_bottom = 0.119
+offset_left = 0.199951
+offset_top = -0.360001
+offset_right = 40.2
+offset_bottom = 39.64
+texture = SubResource("CanvasTexture_6pte2")
+script = ExtResource("9_iomlk")
+
+[node name="Debug" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 149.0
+offset_top = 138.0
+offset_right = 837.0
+offset_bottom = 836.0
+script = ExtResource("9_pvmej")
+
+[node name="Debug2" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 896.0
+offset_top = 138.0
+offset_right = 1584.0
+offset_bottom = 836.0
+script = ExtResource("9_pvmej")
+
+[connection signal="mouse_entered" from="CanvasLayer/TextureRect" to="CanvasLayer/TextureRect" method="_on_mouse_entered"]

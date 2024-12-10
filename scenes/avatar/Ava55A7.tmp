@@ -1,0 +1,231 @@
+[gd_scene load_steps=19 format=3 uid="uid://u6kf67s3v3yw"]
+
+[ext_resource type="Script" path="res://scenes/avatar/avatar.gd" id="1_swfxf"]
+[ext_resource type="Texture2D" uid="uid://bps8s1bt1fn3b" path="res://assets/sprites/avatar/AnimationSheet_Character.png" id="2_r0ln4"]
+[ext_resource type="Script" path="res://scenes/avatar/hitbox_controller.gd" id="3_x51v5"]
+[ext_resource type="Script" path="res://scenes/avatar/event_bus.gd" id="5_6jvmo"]
+[ext_resource type="Script" path="res://scenes/avatar/input_controller.gd" id="6_kc8vc"]
+[ext_resource type="Script" path="res://scenes/avatar/state_controller.gd" id="7_lhcfp"]
+[ext_resource type="Script" path="res://scenes/avatar/animation_controller.gd" id="8_s6034"]
+[ext_resource type="Script" path="res://scenes/avatar/sprite_controller.gd" id="8_yg4tc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6cwre"]
+size = Vector2(14, 27)
+
+[sub_resource type="Animation" id="Animation_7snp4"]
+resource_name = "attack_1_left"
+length = 0.7
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [64, 65, 66, 67, 68, 69, 70, 71]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CombatController/attack_1_hitbox_left:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_2eatv"]
+resource_name = "attack_1_right"
+length = 0.7
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [64, 65, 66, 67, 68, 69, 70, 71]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CombatController/attack_1_hitbox_right:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_0jpb6"]
+resource_name = "idle"
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_f3kbu"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+
+[sub_resource type="Animation" id="Animation_68s76"]
+resource_name = "jump"
+length = 0.8
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [42, 41, 42, 43, 44, 45, 46, 47]
+}
+
+[sub_resource type="Animation" id="Animation_sfo50"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteController/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aheeu"]
+_data = {
+"RESET": SubResource("Animation_sfo50"),
+"attack_1_left": SubResource("Animation_7snp4"),
+"attack_1_right": SubResource("Animation_2eatv"),
+"idle": SubResource("Animation_0jpb6"),
+"jump": SubResource("Animation_68s76"),
+"run": SubResource("Animation_f3kbu")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ii16m"]
+size = Vector2(8, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_li6sv"]
+size = Vector2(14, 27)
+
+[node name="CharacterController" type="CharacterBody2D" node_paths=PackedStringArray("event_bus")]
+script = ExtResource("1_swfxf")
+event_bus = NodePath("EventBus")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -13.5)
+shape = SubResource("RectangleShape2D_6cwre")
+
+[node name="EventBus" type="Node" parent="." node_paths=PackedStringArray("character_body", "combat_controller", "input_controller", "state", "animation_controller")]
+script = ExtResource("5_6jvmo")
+character_body = NodePath("..")
+combat_controller = NodePath("../CombatController")
+input_controller = NodePath("../InputController")
+state = NodePath("../State")
+animation_controller = NodePath("../AnimationController")
+
+[node name="State" type="Node" parent="." node_paths=PackedStringArray("event_bus")]
+script = ExtResource("7_lhcfp")
+event_bus = NodePath("../EventBus")
+
+[node name="InputController" type="Node" parent="."]
+script = ExtResource("6_kc8vc")
+
+[node name="AnimationController" type="Node" parent="." node_paths=PackedStringArray("event_bus", "animation_player")]
+script = ExtResource("8_s6034")
+event_bus = NodePath("../EventBus")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_aheeu")
+}
+
+[node name="CombatController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "state")]
+script = ExtResource("3_x51v5")
+event_bus = NodePath("../EventBus")
+state = NodePath("../State")
+
+[node name="attack_1_hitbox_left" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_left"]
+position = Vector2(-12, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="attack_1_hitbox_right" type="Area2D" parent="CombatController"]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_right"]
+position = Vector2(10, -14)
+shape = SubResource("RectangleShape2D_ii16m")
+
+[node name="Hurtbox" type="Area2D" parent="CombatController"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/Hurtbox"]
+position = Vector2(-1, -13.5)
+shape = SubResource("RectangleShape2D_li6sv")
+
+[node name="SpriteController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "sprite")]
+script = ExtResource("8_yg4tc")
+event_bus = NodePath("../EventBus")
+sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteController"]
+position = Vector2(0, -16)
+texture = ExtResource("2_r0ln4")
+hframes = 8
+vframes = 9
+frame = 64

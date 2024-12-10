@@ -1,0 +1,217 @@
+[gd_scene load_steps=8 format=3 uid="uid://cojkcsi5acbg7"]
+
+[ext_resource type="PackedScene" uid="uid://u6kf67s3v3yw" path="res://scenes/avatar/Avatar.tscn" id="1_8nxm7"]
+[ext_resource type="Script" path="res://scenes/game/menu.gd" id="1_fng8q"]
+[ext_resource type="Script" path="res://scenes/avatar/camera_controller.gd" id="3_rr28s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gfgtv"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_yg1o3"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_3xkb6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c37nt"]
+size = Vector2(0.997493, 1.0044)
+
+[node name="Game" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="MenuWrapper" type="PanelContainer" parent="CanvasLayer" node_paths=PackedStringArray("save_button", "exit_button")]
+process_mode = 3
+offset_left = 301.0
+offset_top = 137.0
+offset_right = 2341.0
+offset_bottom = 1291.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gfgtv")
+script = ExtResource("1_fng8q")
+save_button = NodePath("Menu/Top/Save")
+exit_button = NodePath("Menu/Top/Exit")
+
+[node name="Menu" type="VBoxContainer" parent="CanvasLayer/MenuWrapper"]
+layout_mode = 2
+
+[node name="Top" type="HBoxContainer" parent="CanvasLayer/MenuWrapper/Menu"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Save" type="Button" parent="CanvasLayer/MenuWrapper/Menu/Top"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Save
+"
+
+[node name="Exit" type="Button" parent="CanvasLayer/MenuWrapper/Menu/Top"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Exit"
+
+[node name="Avatar" parent="." instance=ExtResource("1_8nxm7")]
+z_index = 5
+position = Vector2(-1027, 0)
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.34902, 0.45098, 0.447059, 1)
+scale = Vector2(10240, 8640)
+texture = SubResource("CanvasTexture_yg1o3")
+
+[node name="Boundaries" type="Node" parent="."]
+
+[node name="BoundaryTop" type="Sprite2D" parent="Boundaries"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(0, -4291)
+scale = Vector2(10240, 58)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="BoundaryBottom" type="Sprite2D" parent="Boundaries"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(0, 4296)
+scale = Vector2(10240, 58)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="BoundaryRight" type="Sprite2D" parent="Boundaries"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(5087, 0)
+scale = Vector2(57.222, 8640)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="BoundaryLeft" type="Sprite2D" parent="Boundaries"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-5098, 0)
+rotation = 1.5708
+scale = Vector2(8640, 57.222)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="Ground" type="Node" parent="."]
+
+[node name="Ground1" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-566, 260)
+scale = Vector2(2560, 355)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground1"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground1/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground2" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(1979.5, 257)
+scale = Vector2(2177, 355)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground2"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground2/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground4" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-166, -678)
+scale = Vector2(181, 812)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground4"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground4/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground3" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-823, -798.88)
+rotation = 1.5708
+scale = Vector2(968.239, 300)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground3"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground3/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground5" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(426, -386)
+scale = Vector2(181, 932)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground5"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground5/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground6" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-1312, -104)
+scale = Vector2(181, 370)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground6"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground6/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="Ground7" type="Sprite2D" parent="Ground"]
+modulate = Color(0.827451, 0.623529, 0.541176, 1)
+position = Vector2(-1698, -101)
+scale = Vector2(181, 365)
+texture = SubResource("CanvasTexture_3xkb6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground/Ground7"]
+position = Vector2(-0.0100251, -0.511013)
+scale = Vector2(0.00501253, 0.0176211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Ground7/StaticBody2D"]
+position = Vector2(2, 29)
+scale = Vector2(199.5, 56.75)
+shape = SubResource("RectangleShape2D_c37nt")
+
+[node name="CameraController" type="Node2D" parent="." node_paths=PackedStringArray("camera", "avatar", "state", "debug")]
+script = ExtResource("3_rr28s")
+camera = NodePath("Camera2D")
+avatar = NodePath("../Avatar")
+state = NodePath("../Avatar/State")
+debug = NodePath("../CanvasLayer2/RichTextLabel")
+vertical_threshold = null
+offset_distance = null
+smoothing_speed_horizontal = null
+smoothing_speed_vertical = null
+
+[node name="Camera2D" type="Camera2D" parent="CameraController"]
+position = Vector2(0, -1)
+drag_top_margin = 0.5
+drag_bottom_margin = 0.5
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer2"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[editable path="Avatar"]
