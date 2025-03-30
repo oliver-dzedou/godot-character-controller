@@ -1,16 +1,27 @@
-[gd_scene load_steps=14 format=3 uid="uid://cojkcsi5acbg7"]
+[gd_scene load_steps=12 format=3 uid="uid://cojkcsi5acbg7"]
 
 [ext_resource type="PackedScene" uid="uid://u6kf67s3v3yw" path="res://scenes/avatar/Avatar.tscn" id="1_8nxm7"]
-[ext_resource type="Script" path="res://scenes/game/menu.gd" id="1_fng8q"]
-[ext_resource type="Script" path="res://scenes/game/area_2d.gd" id="4_etg1u"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gfgtv"]
-bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_3xkb6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c37nt"]
 size = Vector2(0.997493, 1.0044)
+
+[sub_resource type="GDScript" id="GDScript_klkup"]
+script/source = "extends Area2D
+
+@export var direction = \"bottom\"
+@export var collision: CollisionShape2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dx272"]
 size = Vector2(474, 2842)
@@ -33,38 +44,6 @@ size = Vector2(9.61326, 4.29682)
 [sub_resource type="CanvasTexture" id="CanvasTexture_yg1o3"]
 
 [node name="Game" type="Node2D"]
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="MenuWrapper" type="PanelContainer" parent="CanvasLayer" node_paths=PackedStringArray("save_button", "exit_button")]
-process_mode = 3
-offset_left = 301.0
-offset_top = 137.0
-offset_right = 2341.0
-offset_bottom = 1291.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_gfgtv")
-script = ExtResource("1_fng8q")
-save_button = NodePath("Menu/Top/Save")
-exit_button = NodePath("Menu/Top/Exit")
-
-[node name="Menu" type="VBoxContainer" parent="CanvasLayer/MenuWrapper"]
-layout_mode = 2
-
-[node name="Top" type="HBoxContainer" parent="CanvasLayer/MenuWrapper/Menu"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="Save" type="Button" parent="CanvasLayer/MenuWrapper/Menu/Top"]
-custom_minimum_size = Vector2(140, 0)
-layout_mode = 2
-text = "Save
-"
-
-[node name="Exit" type="Button" parent="CanvasLayer/MenuWrapper/Menu/Top"]
-custom_minimum_size = Vector2(140, 0)
-layout_mode = 2
-text = "Exit"
 
 [node name="Avatar" parent="." instance=ExtResource("1_8nxm7")]
 z_index = 5
@@ -290,7 +269,7 @@ shape = SubResource("RectangleShape2D_c37nt")
 position = Vector2(-798, -32)
 collision_layer = 66048
 collision_mask = 0
-script = ExtResource("4_etg1u")
+script = SubResource("GDScript_klkup")
 collision = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraLimit/CameraLimit1"]
@@ -301,7 +280,7 @@ shape = SubResource("RectangleShape2D_dx272")
 position = Vector2(-798, -32)
 collision_layer = 525312
 collision_mask = 0
-script = ExtResource("4_etg1u")
+script = SubResource("GDScript_klkup")
 collision = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraLimit/CameraLimit2"]
@@ -312,7 +291,7 @@ shape = SubResource("RectangleShape2D_qjvwb")
 position = Vector2(-2094, 1524)
 collision_layer = 525312
 collision_mask = 0
-script = ExtResource("4_etg1u")
+script = SubResource("GDScript_klkup")
 collision = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraLimit/CameraLimit3"]

@@ -4,10 +4,8 @@ extends Node
 # Dependencies
 ##############
 @export var character_body: CharacterBody2D
-@export var combat_controller: Node
 @export var input_controller: Node
 @export var state: Node
-@export var animation_controller: Node
 
 #########
 # Signals
@@ -71,8 +69,6 @@ func _ready() -> void:
 	character_body.last_wall_cling_changed.connect(on_last_wall_cling_changed)
 	character_body.is_coyote_time_changed.connect(on_is_coyote_time_changed)
 	character_body.is_jump_buffer_changed.connect(on_is_jump_buffer_changed)
-	# Combat
-	combat_controller.is_attack_1_changed.connect(on_is_attack_1_changed)
 	
 ######################
 # Custom Functionality
@@ -138,10 +134,6 @@ func on_is_coyote_time_changed(is_coyote_time: bool) -> void:
 	
 func on_is_jump_buffer_changed(is_jump_buffer: bool) -> void:
 	emit_signal("is_jump_buffer_changed", is_jump_buffer)
-	
-# Combat
-func on_is_attack_1_changed(is_attack_1: bool) -> void:
-	emit_signal("is_attack_1_changed", is_attack_1)
 
 # State
 func on_is_facing_right_changed(is_facing_right: bool) -> void:

@@ -1,27 +1,16 @@
-[gd_scene load_steps=26 format=3 uid="uid://u6kf67s3v3yw"]
+[gd_scene load_steps=20 format=3 uid="uid://u6kf67s3v3yw"]
 
-[ext_resource type="Script" path="res://scenes/avatar/avatar.gd" id="1_swfxf"]
-[ext_resource type="Script" path="res://scenes/avatar/combat_controller.gd" id="3_x51v5"]
-[ext_resource type="Script" path="res://scenes/avatar/event_bus.gd" id="5_6jvmo"]
-[ext_resource type="Script" path="res://scenes/avatar/sound_controller.gd" id="6_j67ac"]
-[ext_resource type="Script" path="res://scenes/avatar/input_controller.gd" id="6_kc8vc"]
-[ext_resource type="Script" path="res://scenes/avatar/state_controller.gd" id="7_lhcfp"]
-[ext_resource type="Script" path="res://scenes/avatar/animation_controller.gd" id="8_s6034"]
-[ext_resource type="Script" path="res://scenes/avatar/sprite_controller.gd" id="8_yg4tc"]
-[ext_resource type="Script" path="res://scenes/avatar/texture_rect.gd" id="9_iomlk"]
-[ext_resource type="Script" path="res://scenes/avatar/debug.gd" id="9_pvmej"]
-[ext_resource type="Script" path="res://scenes/avatar/camera_controller.gd" id="11_sb0tw"]
+[ext_resource type="Script" uid="uid://dcwi0o3e7vy54" path="res://scenes/avatar/avatar.gd" id="1_swfxf"]
+[ext_resource type="Script" uid="uid://dq5reo1pydpqa" path="res://scenes/avatar/event_bus.gd" id="5_6jvmo"]
+[ext_resource type="Script" uid="uid://btvt0x4kik4e3" path="res://scenes/avatar/input_controller.gd" id="6_kc8vc"]
+[ext_resource type="Script" uid="uid://bp7y2lp6l2qao" path="res://scenes/avatar/state_controller.gd" id="7_lhcfp"]
+[ext_resource type="Script" uid="uid://bihuljvu1vdxi" path="res://scenes/avatar/sprite_controller.gd" id="8_yg4tc"]
+[ext_resource type="Script" uid="uid://bbej8wjnn62gk" path="res://scenes/avatar/texture_rect.gd" id="9_iomlk"]
+[ext_resource type="Script" uid="uid://rxv7l46xfnca" path="res://scenes/avatar/debug.gd" id="9_pvmej"]
+[ext_resource type="Script" uid="uid://byfqp4o5msbba" path="res://scenes/avatar/camera_controller.gd" id="11_sb0tw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6cwre"]
 size = Vector2(109.5, 169.5)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_aheeu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ii16m"]
-size = Vector2(8, 28)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_li6sv"]
-size = Vector2(14, 27)
 
 [sub_resource type="Gradient" id="Gradient_tg37s"]
 
@@ -76,13 +65,11 @@ bumped_head_right_edge = NodePath("RayCast/BumpedHeadRightEdge")
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_6cwre")
 
-[node name="EventBus" type="Node" parent="." node_paths=PackedStringArray("character_body", "combat_controller", "input_controller", "state", "animation_controller")]
+[node name="EventBus" type="Node" parent="." node_paths=PackedStringArray("character_body", "input_controller", "state")]
 script = ExtResource("5_6jvmo")
 character_body = NodePath("..")
-combat_controller = NodePath("../CombatController")
 input_controller = NodePath("../InputController")
 state = NodePath("../State")
-animation_controller = NodePath("../AnimationController")
 
 [node name="State" type="Node" parent="." node_paths=PackedStringArray("event_bus", "debug")]
 script = ExtResource("7_lhcfp")
@@ -93,25 +80,6 @@ debug = NodePath("../CanvasLayer/Debug")
 script = ExtResource("6_kc8vc")
 state = NodePath("../State")
 event_bus = NodePath("../EventBus")
-
-[node name="AnimationController" type="Node" parent="." node_paths=PackedStringArray("state", "event_bus", "animation_player")]
-script = ExtResource("8_s6034")
-state = NodePath("../State")
-event_bus = NodePath("../EventBus")
-animation_player = NodePath("AnimationPlayer")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
-root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_aheeu")
-}
-
-[node name="SoundController" type="Node" parent="." node_paths=PackedStringArray("event_bus", "state")]
-script = ExtResource("6_j67ac")
-event_bus = NodePath("../EventBus")
-state = NodePath("../State")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="SoundController"]
 
 [node name="CameraController" type="Node" parent="." node_paths=PackedStringArray("camera", "avatar", "state", "camera_focus_detector", "camera_limit_detector_left", "camera_limit_detector_right", "camera_limit_detector_top", "camera_limit_detector_bottom", "ledge_detection")]
 script = ExtResource("11_sb0tw")
@@ -126,38 +94,6 @@ camera_limit_detector_bottom = NodePath("../Area/CameraLimitDetectorBottom")
 ledge_detection = NodePath("../Area/LedgeDetection")
 
 [node name="Camera2D" type="Camera2D" parent="CameraController"]
-
-[node name="CombatController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "state")]
-visible = false
-script = ExtResource("3_x51v5")
-event_bus = NodePath("../EventBus")
-state = NodePath("../State")
-
-[node name="attack_1_hitbox_left" type="Area2D" parent="CombatController"]
-collision_layer = 0
-collision_mask = 4
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_left"]
-position = Vector2(-12, -14)
-shape = SubResource("RectangleShape2D_ii16m")
-
-[node name="attack_1_hitbox_right" type="Area2D" parent="CombatController"]
-collision_layer = 0
-collision_mask = 4
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/attack_1_hitbox_right"]
-position = Vector2(10, -14)
-shape = SubResource("RectangleShape2D_ii16m")
-
-[node name="Hurtbox" type="Area2D" parent="CombatController"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CombatController/Hurtbox"]
-position = Vector2(-1, -14)
-shape = SubResource("RectangleShape2D_li6sv")
 
 [node name="SpriteController" type="Node2D" parent="." node_paths=PackedStringArray("event_bus", "sprite")]
 script = ExtResource("8_yg4tc")
